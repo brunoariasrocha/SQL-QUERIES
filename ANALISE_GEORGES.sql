@@ -1,0 +1,20 @@
+WITH DataWithRowNumber AS (
+    SELECT 
+        SB2.B2_FILIAL AS FILIAL, 
+        SB2.B2_COD AS CODIGO_PRODUTO, 
+        SB1.B1_DESC AS DESCRICAO,
+        SBZ.BZ_XCSTBRU AS CUSTO_BRUTO,
+        SB2.B2_CM1 AS CUSTO_MEDIO,  
+        ROUND(SBZ.BZ_XCSTBRU - SB2.B2_CM1, 4) AS DIFERENCA,
+        ROW_NUMBER() OVER (ORDER BY SB2.B2_COD) AS RowNum
+    FROM [1_RAW].[SB2_PROTHEUS] SB2
+        LEFT JOIN [1_RAW].[SB1_PROTHEUS] SB1
+            ON SB2.B2_COD = SB1.B1_COD
+        LEFT JOIN [1_RAW].[SBZ_PROTHEUS] SBZ
+            ON SB2.B2_COD = SBZ.BZ_COD
+    WHERE SBZ.BZ_XCSTBRU <> '0'
+        AND B1_XCAT1 IN ('01', '02', '03', '04', '09', '10', '12')
+)
+SELECT *
+FROM DataWithRowNumber
+WHERE RowNum BETWEEN 2097152 AND 3145728; -- Alterar o intervalo para os próximos lotes
