@@ -40,6 +40,22 @@ ORDER BY cod_produto ASC;
 --cod_produto>'50503'
 
 ------------------------------------------------------------------------------------------------------------
+select
+	sbz.bz_filial as filial,
+	sbz.bz_cod as codigo,
+	sbz.bz_localiz as endereco,
+	sb1.b1_desc as descricao,
+	sb1.b1_xcat1 as categoria,
+	sb1.b1_xcat2 as subgrupo1
+from [1_raw].[sbz_protheus] sbz
+left join
+	[1_raw].[sb1_protheus] sb1
+	on sbz.bz_cod = sb1.b1_cod
+where sb1.b1_xcat1 = '02' 
+	and sb1.b1_xcat2 = '09'
+	and sbz.bz_localiz = 'S'
+order by b1_cod
+------------------------------------------------------------------------------------------------------------
 SELECT DISTINCT 
        COALESCE(SB1.B1_COD, TBL.cod_produto) AS CODIGO, 
        SB1.B1_DESC AS DESC_SB1, 
