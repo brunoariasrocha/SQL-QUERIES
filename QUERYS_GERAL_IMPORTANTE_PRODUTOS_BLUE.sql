@@ -108,3 +108,16 @@ SELECT *
 FROM RankedProducts
 WHERE RowNum = 1
 ORDER BY cod_produto ASC;
+------------------------------------------------------------------------------------------------------------
+SELECT TOP 10
+	fil.nom_fantasia AS nome_filial,
+    --prod.cnpj_empresa AS cnpj,
+    prod.cod_produto AS codigo_produto,
+    prod.cod_produto_ant AS codigo_produto_protheus,
+    prod.cod_grupo AS codigo_grupo,
+    prod.cod_subgrupo AS codigo_subgrupo,
+    prod.cod_barra AS codigo_barras
+    --fil.cnpj AS cnpj2,    
+FROM [3_CUR].[TBL_DIM_PRODUTOS_ORIG_CDL] AS prod
+LEFT JOIN [3_CUR].[DIM_FILIAIS] AS fil
+    ON prod.cnpj_empresa = fil.cnpj;
